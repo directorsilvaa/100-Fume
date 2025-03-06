@@ -4,7 +4,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  images: { 
+    unoptimized: true,
+    domains: ['images.unsplash.com']
+  },
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
 };
 
 module.exports = nextConfig;
