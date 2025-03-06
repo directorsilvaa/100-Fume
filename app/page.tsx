@@ -1,145 +1,197 @@
-'use client';
+"use client";
 
-import { ArrowRight, Shield, Star, TrendingUp, Users, ChevronDown, Instagram, Car } from 'lucide-react';
-import Image from 'next/image';
-import { Navbar } from '@/components/Navbar';
-import { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { Navbar } from "@/components/navbar";
+import { HeroSection } from "@/components/hero-section";
+import { CategoriesSection } from "@/components/categories-section";
+import { ServicesSection } from "@/components/services-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { CTASection } from "@/components/cta-section";
+import { Footer } from "@/components/footer";
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
+import { useEffect, useState } from "react";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+};
+
+const staggerChildren = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+// Animated background shapes
+const BackgroundShapes = () => {
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {/* Gradient orbs - Responsive sizes */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 0.15, scale: 1 }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+        className="absolute top-0 left-1/4 w-[250px] md:w-[500px] h-[250px] md:h-[500px] rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-[50px] md:blur-[100px]"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 0.1, scale: 1 }}
+        transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", delay: 1 }}
+        className="absolute bottom-1/3 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 blur-[60px] md:blur-[120px]"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 0.12, scale: 1 }}
+        transition={{ duration: 2.5, repeat: Infinity, repeatType: "reverse", delay: 0.5 }}
+        className="absolute top-1/3 right-1/3 w-[200px] md:w-[400px] h-[200px] md:h-[400px] rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 blur-[45px] md:blur-[90px]"
+      />
+
+      {/* Animated lines - Hide on mobile */}
+      <div className="hidden md:block">
+        <svg className="absolute inset-0 w-full h-full">
+          <motion.path
+            d="M0 100 Q 250 50 500 100 T 1000 100"
+            stroke="url(#gradient1)"
+            strokeWidth="0.5"
+            fill="none"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.1 }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          <motion.path
+            d="M0 200 Q 250 150 500 200 T 1000 200"
+            stroke="url(#gradient2)"
+            strokeWidth="0.5"
+            fill="none"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.1 }}
+            transition={{ duration: 2, delay: 0.5, repeat: Infinity }}
+          />
+          <defs>
+            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
+            </linearGradient>
+            <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L3N2Zz4=')] opacity-30" />
+    </div>
+  );
+};
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+  
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#0B2447] via-[#19376D] to-[#0B2447]">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 text-white overflow-hidden">
-        <div className="container mx-auto px-4 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-8">
-              <div 
-                className={`
-                  inline-block bg-white/10 px-6 py-2 rounded-full backdrop-blur-sm
-                  transform transition-all duration-1000 
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                `}
-              >
-                <span className="text-gray-300 uppercase tracking-wider text-sm">Soluções Profissionais</span>
-              </div>
-              
-              <h1 
-                className={`
-                  text-4xl md:text-6xl font-bold leading-tight
-                  transform transition-all duration-1000 delay-300
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                `}
-              >
-                Especialistas em{' '}
-                <span className="text-[#A5D7E8] relative">
-                  Películas
-                  <span className="absolute -inset-1 bg-[#A5D7E8]/20 blur-lg -z-10"></span>
-                </span>{' '}
-                e{' '}
-                <span className="text-[#A5D7E8] relative">
-                  Envelopamento
-                  <span className="absolute -inset-1 bg-[#A5D7E8]/20 blur-lg -z-10"></span>
-                </span>
-              </h1>
-              
-              <p 
-                className={`
-                  text-gray-300 text-lg md:text-xl max-w-xl
-                  transform transition-all duration-1000 delay-500
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                `}
-              >
-                Oferecemos soluções completas em personalização automotiva com películas e envelopamentos de alta qualidade.
-              </p>
-              
-              <div 
-                className={`
-                  flex flex-wrap gap-4
-                  transform transition-all duration-1000 delay-700
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                `}
-              >
-                <button className="
-                  bg-[#A5D7E8] hover:bg-[#A5D7E8]/80 text-[#0B2447] 
-                  px-8 py-3 rounded-full font-medium 
-                  transition-all transform hover:scale-105
-                  shadow-[0_0_15px_rgba(165,215,232,0.5)]
-                ">
-                  Solicitar Orçamento
-                </button>
-                <button className="
-                  flex items-center gap-2 text-[#A5D7E8] 
-                  hover:text-[#A5D7E8]/80 transition-colors
-                  group
-                ">
-                  <Instagram className="h-5 w-5 transition-transform group-hover:rotate-12" />
-                  <span className="relative">
-                    Siga no Instagram
-                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[#A5D7E8]/50 scale-x-0 group-hover:scale-x-100 transition-transform"></span>
-                  </span>
-                </button>
-              </div>
+    <motion.main 
+      initial="initial"
+      animate="animate"
+      className="relative overflow-hidden"
+    >
+      <BackgroundShapes />
 
-              {/* Stats */}
-              <div 
-                className={`
-                  grid grid-cols-3 gap-8 pt-8 border-t border-white/10
-                  transform transition-all duration-1000 delay-1000
-                  ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                `}
-              >
-                <div className="group cursor-pointer">
-                  <div className="text-3xl font-bold text-white mb-1 group-hover:text-[#A5D7E8] transition-colors">2500+</div>
-                  <div className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Projetos Realizados</div>
-                </div>
-                <div className="group cursor-pointer">
-                  <div className="text-3xl font-bold text-white mb-1 group-hover:text-[#A5D7E8] transition-colors">5000+</div>
-                  <div className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Clientes Satisfeitos</div>
-                </div>
-                <div className="group cursor-pointer">
-                  <div className="text-3xl font-bold text-white mb-1 group-hover:text-[#A5D7E8] transition-colors">300+</div>
-                  <div className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">Parceiros</div>
-                </div>
-              </div>
-            </div>
+      {/* Content */}
+      <div className="relative z-10 backdrop-blur-[2px]">
+        <motion.div {...fadeInUp}>
+          <Navbar />
+        </motion.div>
 
-            {/* Right Content - Hero Image */}
-            <div 
-              className={`
-                relative h-full flex items-center justify-center
-                transform transition-all duration-1000 delay-500
-                ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}
-              `}
+        <motion.div 
+          variants={staggerChildren}
+          className="space-y-16 md:space-y-24 lg:space-y-32"
+        >
+          <motion.div variants={fadeInUp} id="hero">
+            <HeroSection />
+          </motion.div>
+
+          <motion.div variants={fadeInUp} id="categories">
+            <CategoriesSection />
+          </motion.div>
+
+          <motion.div variants={fadeInUp} id="services">
+            <ServicesSection />
+          </motion.div>
+
+          <motion.div variants={fadeInUp} id="testimonials">
+            <TestimonialsSection />
+          </motion.div>
+
+          <motion.div variants={fadeInUp} id="contact">
+            <CTASection />
+          </motion.div>
+        </motion.div>
+
+        <motion.div 
+          variants={fadeInUp}
+          className="mt-16 md:mt-24"
+        >
+          <Footer />
+        </motion.div>
+
+        {/* Progress bar */}
+        <motion.div
+          className="fixed top-0 left-0 right-0 h-1 bg-blue-600 transform origin-left z-50"
+          style={{ scaleX }}
+        />
+
+        {/* Scroll to top button */}
+        <AnimatePresence>
+          {showScrollButton && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="fixed bottom-24 right-4 md:bottom-8 md:right-24 bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200 group z-50"
             >
-              <div className="relative w-full h-[550px] rounded-3xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/home.png"
-                  alt="100% FUME - Especialistas em Películas e Envelopamento"
-                  fill
-                  className="object-contain md:object-cover"
-                  priority
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-5 w-5 md:h-6 md:w-6 transform group-hover:-translate-y-1 transition-transform duration-200" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M5 10l7-7m0 0l7 7m-7-7v18" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B2447]/50 to-transparent"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </svg>
+            </motion.button>
+          )}
+        </AnimatePresence>
 
-        {/* Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#A5D7E8] rounded-full blur-[120px] opacity-20 animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-[#A5D7E8] rounded-full blur-[150px] opacity-20 animate-pulse delay-1000" />
-        </div>
-      </section>
-    </main>
+        {/* Floating WhatsApp Button */}
+        <FloatingWhatsApp />
+      </div>
+    </motion.main>
   );
 }
