@@ -51,7 +51,7 @@ export function FloatingWhatsApp() {
             
             {/* Button */}
             <button
-              onClick={() => window.open('https://wa.me/5577991728188', '_blank')}
+              onClick={() => window.open('https://wa.me/5575982104848', '_blank')}
               className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-colors duration-200 flex items-center gap-2 group"
             >
               <MessageSquare className="h-6 w-6" />

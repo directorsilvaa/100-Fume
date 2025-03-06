@@ -82,7 +82,7 @@ export function Navbar() {
 
           <Button 
             className="bg-green-500 hover:bg-green-600 text-white rounded-full"
-            onClick={() => window.open('https://wa.me/5577991728188', '_blank')}
+            onClick={() => window.open('https://wa.me/5575982104848', '_blank')}
           >
             <MessageSquare className="h-5 w-5 mr-2" />
             Atendimento WhatsApp
@@ -154,7 +154,7 @@ export function Navbar() {
                 </Button>
                 <Button 
                   className="bg-green-500 hover:bg-green-600 text-white w-full justify-start"
-                  onClick={() => window.open('https://wa.me/5577991728188', '_blank')}
+                  onClick={() => window.open('https://wa.me/5575982104848', '_blank')}
                 >
                   <MessageSquare className="h-5 w-5 mr-2" />
                   Atendimento WhatsApp

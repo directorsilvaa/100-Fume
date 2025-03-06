@@ -3,13 +3,18 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Car, Building, Package, ArrowRight } from "lucide-react";
+import { Car, Building, Package, ArrowRight, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function CategoriesSection() {
   const [activeCategory, setActiveCategory] = useState<string>("car");
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+
+  const handleWhatsAppClick = (category: string) => {
+    const message = encodeURIComponent(`Olá! Gostaria de saber mais sobre os serviços de ${category.toLowerCase()}`);
+    window.open(`https://wa.me/5575982104848?text=${message}`, '_blank');
+  };
 
   return (
     <div className="py-24 bg-gradient-to-b from-white to-blue-50/50 relative overflow-hidden">
@@ -130,6 +135,7 @@ export function CategoriesSection() {
                     >
                       <Button 
                         className="mt-6 bg-blue-700 hover:bg-blue-800 text-white rounded-full px-6 py-6 h-auto text-lg font-medium group"
+                        onClick={() => handleWhatsAppClick(category.name)}
                       >
                         Saiba mais sobre {category.name.toLowerCase()}
                         <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -173,6 +179,23 @@ export function CategoriesSection() {
               ))}
             </AnimatePresence>
           </div>
+        </div>
+
+        <div className="flex justify-center mt-16">
+          <motion.div 
+            className="relative group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full opacity-70 group-hover:opacity-100 blur transition duration-300" />
+            <Button 
+              className="relative bg-white text-blue-700 hover:bg-blue-50 rounded-full px-8 py-6 h-auto text-lg font-medium group"
+              onClick={() => handleWhatsAppClick('todos os serviços')}
+            >
+              Ver todos os serviços
+              <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </motion.div>
         </div>
       </div>
     </div>

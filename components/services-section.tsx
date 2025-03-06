@@ -33,6 +33,11 @@ export function ServicesSection() {
     ? services 
     : services.filter(service => service.category === selectedCategory);
 
+  const handleWhatsAppClick = (service: string) => {
+    const message = encodeURIComponent(`Olá! Gostaria de saber mais sobre o serviço de ${service.toLowerCase()}`);
+    window.open(`https://wa.me/5575982104848?text=${message}`, '_blank');
+  };
+
   return (
     <div className="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Background Elements */}
@@ -178,6 +183,7 @@ export function ServicesSection() {
                         service.color === "red" && "border-red-200 hover:bg-red-700 hover:text-white hover:border-red-700",
                         service.color === "indigo" && "border-indigo-200 hover:bg-indigo-700 hover:text-white hover:border-indigo-700",
                       )}
+                      onClick={() => handleWhatsAppClick(service.title)}
                     >
                       Saiba mais <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Button>
@@ -195,7 +201,10 @@ export function ServicesSection() {
             whileTap={{ scale: 0.95 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full opacity-70 group-hover:opacity-100 blur transition duration-300" />
-            <Button className="relative bg-white text-blue-700 hover:bg-blue-50 rounded-full px-8 py-6 h-auto text-lg font-medium">
+            <Button 
+              className="relative bg-white text-blue-700 hover:bg-blue-50 rounded-full px-8 py-6 h-auto text-lg font-medium"
+              onClick={() => handleWhatsAppClick('todos os serviços')}
+            >
               Ver todos os serviços
               <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>

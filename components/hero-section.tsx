@@ -73,7 +73,7 @@ export function HeroSection() {
             >
               <Button 
                 className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white text-sm md:text-base"
-                onClick={() => window.open('https://wa.me/5577991728188', '_blank')}
+                onClick={() => window.open('https://wa.me/5575982104848', '_blank')}
               >
                 Solicitar Orçamento
               </Button>

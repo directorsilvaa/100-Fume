@@ -227,7 +227,10 @@ export function CarSimulatorSection() {
                 </ul>
               </div>
 
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+              <Button 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => window.open('https://wa.me/5575982104848', '_blank')}
+              >
                 Solicitar Orçamento com Esta Configuração
               </Button>
             </div>
